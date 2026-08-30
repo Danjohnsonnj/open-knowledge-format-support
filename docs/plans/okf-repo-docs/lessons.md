@@ -24,7 +24,7 @@
 ## Index-first, then 1–3 files
 
 - Context: Token-efficient consumption
-- Lesson: `AGENTS.md` and `README.md` point at `docs/index.md`; they do not contain the architecture essay. `index.md` copies `title` + `description`. Filter on folder/`type`/`status` before opening bodies.
+- Lesson: `AGENTS.md` points at `docs/index.md` (prefer over README for query); `README.md` is human-facing and may link the hub. Neither contains the architecture essay. `index.md` copies `title` + `description`. Filter on folder/`type`/`status` before opening bodies.
 - Evidence: OKF spec §8; this interview (minute-one discoverability)
 - Crystallize?: yes — skeleton AGENTS.md/README + query protocol in the skill
 

@@ -10,7 +10,7 @@ Canonical source for the **okf-docs** agent skill and the OKF v0.2 software-repo
 - **`docs/`** — a dogfood documentation bundle and design notes for the profile
 - **Installer scripts** — deploy the skill to Cursor or agent skill roots
 
-Code wins over wiki. `AGENTS.md` and `README.md` index; the bundle holds the knowledge.
+Code wins over wiki. The bundle (`docs/`) holds the knowledge; agents start at [`AGENTS.md`](AGENTS.md).
 
 ## Quick start
 
@@ -45,6 +45,7 @@ Edit the skill in **`skills/okf-docs/`** in this repository — not in your home
 
 ## Documentation
 
+- [AGENTS.md](AGENTS.md) — agent entry (prefer over README for the narrow query path)
 - [docs/index.md](docs/index.md) — bundle hub (settled knowledge and in-progress efforts)
 - [skills/okf-docs/SKILL.md](skills/okf-docs/SKILL.md) — skill entry point
 - [skills/okf-docs/producer-profile.md](skills/okf-docs/producer-profile.md) — implementer spec for the software-repo profile

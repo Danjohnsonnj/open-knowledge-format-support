@@ -6,6 +6,7 @@ okf_version: "0.2"
 
 # Settled
 
+* [Decisions](decisions.md) - locked rationale
 * [Concepts](concepts/) - glossary, invariants, modules, architecture
 * [Runbooks](runbooks/) - operational procedures
 * [Agents](agents/) - agent guides and product state

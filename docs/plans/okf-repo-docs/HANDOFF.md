@@ -5,7 +5,7 @@
 **Current phase:** Phase 3 — Implement profile — complete
 **Next action:** None for v1. Phase 4 (live-repo migration) only when asked. Skill distribution is tracked separately under [okf-skill-distribution](../okf-skill-distribution/HANDOFF.md).
 
-**Hard invariants:** Code wins over wiki. Human-verified concepts are not silently regenerated. Settled and WIP are both first-class (`plans/` vs other default folders). No `layer` key. AGENTS.md/README index, they do not hold the architecture essay. Do not commit unless asked.
+**Hard invariants:** Code wins over wiki. Human-verified concepts are not silently regenerated. Settled and WIP are both first-class (`plans/` vs other default folders). No `layer` key. `AGENTS.md` routes agents; `README.md` is human-facing — neither holds the architecture essay. Do not commit unless asked.
 
 **Required reading (this phase):**
 

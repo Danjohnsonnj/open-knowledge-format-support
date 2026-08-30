@@ -1,6 +1,7 @@
 # Directory Update Log
 
 ## 2026-08-30
+* **Decision**: [README human-facing; AGENTS.md agent pointer](decisions.md#readme-is-human-facing-agentsmd-is-the-agent-pointer) — split minute-one roles; query prefers `AGENTS.md`.
 * **Update**: Re-homed `okf-docs` to [skills/okf-docs/](../../skills/okf-docs/); added installer ([SCRIPTS.md](../../SCRIPTS.md)); new effort [okf-skill-distribution](plans/okf-skill-distribution/HANDOFF.md).
 * **Update**: [okf-repo-docs producer-profile](plans/okf-repo-docs/producer-profile.md) is now a pointer to the skill copy.
 

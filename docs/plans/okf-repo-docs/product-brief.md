@@ -28,7 +28,7 @@ Cloud agents and fresh workspaces cannot see agentmemory. Token spend is wasted 
 
 ## Success criteria
 
-- A cold-start agent in a workspace without agentmemory can load `AGENTS.md` or `README.md` → `docs/index.md` → 1–3 concepts and act
+- A cold-start agent in a workspace without agentmemory can load `AGENTS.md` → `docs/index.md` → 1–3 concepts and act
 - Settled vs WIP are distinguishable without reading bodies (path under `plans/` vs not, plus `type` / `status`)
 - Both corpora are first-class in the root index; loading one does not require loading the other
 - An agent can add/update a concept, refresh the affected index, and append the log in one pass
@@ -41,7 +41,7 @@ Cloud agents and fresh workspaces cannot see agentmemory. Token spend is wasted 
 - **Default shared set:** Settled — `docs/concepts/` (`Glossary`, `Invariant`, `Module`, `Architecture`), `docs/runbooks/` (`Runbook`, `Playbook`), `docs/agents/` (`AgentGuide`, `ProductState`), one `docs/decisions.md` (`DecisionLog`) until UAT says split. WIP — only `docs/plans/<slug>/`. Bundle root `docs/index.md` + `docs/log.md`. No default `questions/` or `layer` key. Extra type folders are per-repo extensions. `docs/archive/` optional.
 - **Complexity (B):** keep those splits; drop duplicates. No `layer`. No formal routing-table DSL. No 4-way lint.
 - **Frontmatter required:** `type`, `title`, `description`, `status`, `generated`. Recommended: `tags`, `resource`. When locking an invariant/decision: `verified`. Optional: `stale_after`, `sources`, `anchor`. Nature = folder family + `type`. `status` = document readiness (a HANDOFF may be `stable` and still WIP).
-- **Minute-one:** `AGENTS.md` and `README.md` point at `docs/index.md` (and the active HANDOFF when resuming). They are discoverability, not the architecture essay.
+- **Minute-one:** `AGENTS.md` is the agent pointer to `docs/index.md` (and the active HANDOFF when resuming). `README.md` is the human landing page — keep user-facing content; may link the hub. Neither holds the architecture essay.
 - **Updater checklist (seven events):**
   1. Decision or invariant locked → `docs/decisions.md` (`verified` when locked).
   2. Ship / defer / priority change → `docs/agents/` ProductState.
@@ -51,7 +51,7 @@ Cloud agents and fresh workspaces cannot see agentmemory. Token spend is wasted 
   6. Session wrap, open question, deferred work, or in-flight design → current `docs/plans/<slug>/`.
   7. Architecture, dependency **policy**, or a coding/ops pattern locked → `docs/concepts/` as `Architecture`, `Module`, or `Invariant`. Lockfiles/code remain source of truth for versions. One concern per file; do not grow a new monolith.
 - **Routing rules (still apply):** exact checklist hit → write there. Existing file → stay put. New settled without a hit → ask. Other new files → `draft` in the current plan tree. Never invent a settled page.
-- **Never:** put the architecture essay in `AGENTS.md` or `README.md`; those files index and route.
+- **Never:** put the architecture essay in `AGENTS.md` or `README.md`; `AGENTS.md` routes agents, `README.md` serves humans on GitHub.
 - **Lint:** `docs/plans/**` is WIP; other default folders are settled; `type` must be in that folder’s allowed set.
 - **Settle:** write the settled file and link from the plan. Deprecate the WIP copy only when it would still look current. Do not move files (path is identity).
 - **Delivery (C):** this effort ships (1) a global skill with a short updater checklist and a new-repo skeleton in `templates/`, (2) plan-build template updates for *new* trees (frontmatter on leaves; effort `log.md` instead of `progress-log.md`; `docs/plans/` is the WIP side of the bundle). Old plan trees stay until touched. Live-repo migration is a later gated phase, not v1.

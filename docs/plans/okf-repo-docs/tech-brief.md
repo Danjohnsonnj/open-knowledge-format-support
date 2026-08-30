@@ -19,9 +19,9 @@
 
 ## Proposed architecture
 
-Locked. Bundle at `docs/`; type-named folders; root index Settled | In progress. Updater is a **seven-event checklist** (product-brief). `AGENTS.md` and `README.md` are minute-one **pointers** to `docs/index.md`, not the essay. Agentmemory: file-first, optional path gist. Skill home: `skills/okf-docs/` in this repo; install globally with `./scripts/install-okf-docs`. plan-build new trees: frontmatter + `log.md`.
+Locked. Bundle at `docs/`; type-named folders; root index Settled | In progress. Updater is a **seven-event checklist** (product-brief). `AGENTS.md` is the agent pointer to `docs/index.md`; `README.md` is human-facing (keep body; may link hub). Agentmemory: file-first, optional path gist. Skill home: `skills/okf-docs/` in this repo; install globally with `./scripts/install-okf-docs`. plan-build new trees: frontmatter + `log.md`.
 
-Query: AGENTS.md / README → `docs/index.md` → filter by folder/`type`/`status` → 1–3 files. Resume an effort: HANDOFF.md first, then required reading.
+Query: prefer `AGENTS.md` → `docs/index.md` → filter by folder/`type`/`status` → 1–3 files. Resume an effort: HANDOFF.md first, then required reading.
 
 ## Hard invariants
 

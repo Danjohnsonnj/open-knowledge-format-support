@@ -4,6 +4,8 @@ Sandbox for the OKF repo-docs workflow.
 
 Canonical docs: [docs/index.md](docs/index.md)
 
+Prefer this file over `README.md` for the narrow query path (`AGENTS.md` → `docs/index.md` → 1–3 files).
+
 Active effort: [docs/plans/okf-skill-distribution/HANDOFF.md](docs/plans/okf-skill-distribution/HANDOFF.md)
 
 Skill source (canonical): [skills/okf-docs/](skills/okf-docs/) — install with [SCRIPTS.md](SCRIPTS.md)

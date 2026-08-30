@@ -13,7 +13,7 @@ description: Initializes and maintains an OKF-compatible docs/ bundle in a softw
 4. Else → **Init** (greenfield). Copy `templates/`; open `producer-profile.md` only when filling required frontmatter.
 5. If 3 vs 4 is unclear → **ask** (init skeleton vs retrofit assessment).
 
-**Not legacy alone:** `AGENTS.md`, `README.md`, `CLAUDE.md` (pointer-trim on Init only).
+**Not legacy alone:** `AGENTS.md`, `README.md`, `CLAUDE.md` (pointer-trim on Init applies to `AGENTS.md` / `CLAUDE.md` only — not root `README.md`).
 
 **Explicit user wins:** `docs/index.md` + user says retrofit → Retrofit. Wrap-up with a bundle → Maintain event 6, never Retrofit.
 
@@ -32,7 +32,7 @@ Daily producer for the software-repo OKF profile. Detail and folder/type map: [p
 
 Pick settled **or** WIP, not both.
 
-1. `AGENTS.md` or `README.md` → `docs/index.md`.
+1. Prefer `AGENTS.md` when present, else `README.md` → `docs/index.md`.
 2. Filter by Settled / In progress, then folder, `type`, `status`.
 3. Open 1–3 files. Stop.
 
@@ -65,7 +65,7 @@ Copy `templates/` to the repo root. Fill `{{PROJECT}}` / `{{ONE_LINE_PURPOSE}}`.
 3. Prepend `docs/log.md` (newest first).
 4. If under `docs/plans/<slug>/`, also update that effort’s `log.md`, or `progress-log.md` when `log.md` is absent.
 
-Minute-one files (`AGENTS.md`, `README.md`) stay pointers — no architecture essay. Do not commit unless asked.
+`AGENTS.md` stays a pointer — no architecture essay. `README.md` stays human-facing; do not trim it to a pointer stub. Do not commit unless asked.
 
 ## Lint
 

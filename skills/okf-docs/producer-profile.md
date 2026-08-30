@@ -92,18 +92,18 @@ Reserved files (`index.md`, `log.md`) are not concepts — do not add `type`.
 
 ## Minute-one files
 
-`AGENTS.md` and `README.md` are **pointers**, not the architecture essay.
+Different audiences. Neither file is the architecture essay.
 
-- `AGENTS.md`: one-line purpose, stack/commands stubs, link to `docs/index.md`. When resuming a named effort, also point at that effort’s `HANDOFF.md`.
-- `README.md`: human one-liner + the same `docs/index.md` link.
+- `AGENTS.md`: **agent pointer** — one-line purpose, stack/commands stubs, link to `docs/index.md`. When resuming a named effort, also point at that effort’s `HANDOFF.md`.
+- `README.md`: **human landing page** (GitHub, clone). Keep user-facing content (install, usage, license, screenshots). May add a short docs subsection linking `docs/index.md` (and `AGENTS.md` if present). Never replace an existing README with a pointer-only stub. Greenfield seed may be short (purpose + hub link) because there is no prior GitHub copy.
 
-Never duplicate a glossary, decision, or architecture write-up here. Never put secrets in the bundle.
+Never duplicate a glossary, decision, or architecture write-up in either file. Never put secrets in the bundle.
 
 ## Query protocol
 
 Default load is narrow. Pick the corpus the task needs (settled **or** WIP), not both.
 
-1. Read `AGENTS.md` or `README.md` (whichever exists).
+1. Read `AGENTS.md` when it exists; otherwise `README.md`. Do not load a fat README as the first hop when `AGENTS.md` is present.
 2. Open `docs/index.md`. Filter by section (Settled / In progress), then folder, `type`, and `status`.
 3. Open **1–3** files. Stop.
 
@@ -147,7 +147,7 @@ Do not commit unless asked.
 
 - `docs/plans/**` is WIP; other default folders are settled.
 - `type` ∈ that folder’s allowed set.
-- Minute-one files index only.
+- `AGENTS.md` indexes only; `README.md` stays human-facing (may link the hub).
 - No `layer` key. No default `docs/questions/`.
 - Do not split `docs/decisions.md` or a glossary monolith without task-level UAT evidence.
 
@@ -173,8 +173,8 @@ Pitfalls stay in memory until they hit **twice**, then a `Lesson`: settled `docs
 Create only these files (no architecture essay, no empty `decisions.md`, no plan tree until plan-build init):
 
 ```
-AGENTS.md                 # purpose, commands/stack stubs, link to docs/index.md
-README.md                 # human one-liner, link to docs/index.md
+AGENTS.md                 # agent pointer: purpose, commands/stack stubs, link to docs/index.md
+README.md                 # human landing: purpose + hub link (expand as the product needs)
 docs/index.md             # okf_version: "0.2"; Settled | In progress
 docs/log.md               # empty dated log (heading only is fine)
 docs/concepts/index.md
