@@ -1,0 +1,70 @@
+#!/bin/sh
+# Smoke test for scripts/install-okf-docs using a temporary HOME.
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+INSTALLER="$REPO_ROOT/scripts/install-okf-docs"
+
+TMP_HOME=$(mktemp -d)
+trap 'rm -rf -- "$TMP_HOME"' EXIT INT TERM
+
+export HOME="$TMP_HOME"
+mkdir -p "$HOME/.cursor" "$HOME/.agents"
+
+assert_readable() {
+  path=$1
+  [ -f "$path" ] || {
+    printf 'smoke-install-okf-docs: missing file: %s\n' "$path" >&2
+    exit 1
+  }
+}
+
+run_case() {
+  target=$1
+  mode=$2
+  label="${target}-${mode}"
+  printf 'smoke-install-okf-docs: case %s\n' "$label"
+
+  rm -rf "$HOME/.cursor/skills" "$HOME/.agents/skills"
+  mkdir -p "$HOME/.cursor" "$HOME/.agents"
+
+  sh "$INSTALLER" --target "$target" --mode "$mode" --replace
+
+  case "$target" in
+    cursor)
+      assert_readable "$HOME/.cursor/skills/okf-docs/SKILL.md"
+      assert_readable "$HOME/.cursor/skills/okf-docs/retrofit.md"
+      if [ "$mode" = link ] && [ ! -L "$HOME/.cursor/skills/okf-docs" ]; then
+        printf 'smoke-install-okf-docs: expected cursor link destination\n' >&2
+        exit 1
+      fi
+      ;;
+    agents)
+      assert_readable "$HOME/.agents/skills/okf-docs/SKILL.md"
+      assert_readable "$HOME/.agents/skills/okf-docs/retrofit.md"
+      if [ "$mode" = link ] && [ ! -L "$HOME/.agents/skills/okf-docs" ]; then
+        printf 'smoke-install-okf-docs: expected agents link destination\n' >&2
+        exit 1
+      fi
+      ;;
+    both)
+      assert_readable "$HOME/.cursor/skills/okf-docs/SKILL.md"
+      assert_readable "$HOME/.agents/skills/okf-docs/SKILL.md"
+      ;;
+  esac
+}
+
+# Non-interactive auto with both parents present must fail safely.
+if sh "$INSTALLER" --target auto --mode copy >/dev/null 2>&1; then
+  printf 'smoke-install-okf-docs: expected auto to fail when ambiguous\n' >&2
+  exit 1
+fi
+
+run_case cursor copy
+run_case agents copy
+run_case both copy
+run_case cursor link
+run_case agents link
+
+printf 'smoke-install-okf-docs: all cases passed\n'

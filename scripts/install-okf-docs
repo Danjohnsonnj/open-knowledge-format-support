@@ -1,0 +1,183 @@
+#!/bin/sh
+# Install skills/okf-docs from this repository into Cursor or agent skill roots.
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+SOURCE="$REPO_ROOT/skills/okf-docs"
+
+CURSOR_DEST="$HOME/.cursor/skills/okf-docs"
+AGENTS_DEST="$HOME/.agents/skills/okf-docs"
+
+TARGET="auto"
+MODE="copy"
+REPLACE=0
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/install-okf-docs [options]
+
+Install the in-repo okf-docs skill to global skill roots.
+
+Options:
+  --target cursor|agents|both|auto   Destination root(s) (default: auto)
+  --mode copy|link                   Install mode (default: copy)
+  --replace                          Replace an existing non-symlink destination
+  -h, --help                         Show this help
+
+auto: use the sole existing okf-docs install or sole existing skills parent;
+      if both or neither apply, prompt when interactive else exit with an error.
+EOF
+}
+
+log() {
+  printf '%s\n' "$*"
+}
+
+die() {
+  printf 'install-okf-docs: %s\n' "$*" >&2
+  exit 1
+}
+
+is_interactive() {
+  [ -t 0 ] && [ -t 1 ]
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --target)
+      [ $# -ge 2 ] || die "missing value for --target"
+      TARGET=$2
+      shift 2
+      ;;
+    --mode)
+      [ $# -ge 2 ] || die "missing value for --mode"
+      MODE=$2
+      shift 2
+      ;;
+    --replace)
+      REPLACE=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      die "unknown argument: $1"
+      ;;
+  esac
+done
+
+case "$TARGET" in
+  cursor|agents|both|auto) ;;
+  *) die "invalid --target: $TARGET" ;;
+esac
+
+case "$MODE" in
+  copy|link) ;;
+  *) die "invalid --mode: $MODE" ;;
+esac
+
+validate_source() {
+  [ -d "$SOURCE" ] || die "source not found: $SOURCE"
+  for f in SKILL.md producer-profile.md retrofit.md; do
+    [ -f "$SOURCE/$f" ] || die "source missing required file: $f"
+  done
+  [ -d "$SOURCE/templates" ] || die "source missing templates/"
+  [ -d "$SOURCE/templates/retrofit" ] || die "source missing templates/retrofit/"
+}
+
+resolve_auto_target() {
+  cursor_installed=0
+  agents_installed=0
+  cursor_parent=0
+  agents_parent=0
+
+  [ -e "$CURSOR_DEST" ] && cursor_installed=1
+  [ -e "$AGENTS_DEST" ] && agents_installed=1
+  [ -d "$HOME/.cursor/skills" ] || [ -d "$HOME/.cursor" ] && cursor_parent=1
+  [ -d "$HOME/.agents/skills" ] || [ -d "$HOME/.agents" ] && agents_parent=1
+
+  if [ "$cursor_installed" -eq 1 ] && [ "$agents_installed" -eq 0 ]; then
+    printf '%s' cursor
+    return 0
+  fi
+  if [ "$agents_installed" -eq 1 ] && [ "$cursor_installed" -eq 0 ]; then
+    printf '%s' agents
+    return 0
+  fi
+  if [ "$cursor_parent" -eq 1 ] && [ "$agents_parent" -eq 0 ]; then
+    printf '%s' cursor
+    return 0
+  fi
+  if [ "$agents_parent" -eq 1 ] && [ "$cursor_parent" -eq 0 ]; then
+    printf '%s' agents
+    return 0
+  fi
+
+  if is_interactive; then
+    printf 'install-okf-docs: choose install target:\n' >&2
+    printf '  1) cursor (%s)\n' "$CURSOR_DEST" >&2
+    printf '  2) agents (%s)\n' "$AGENTS_DEST" >&2
+    printf '  3) both\n' >&2
+    printf 'Choice [1/2/3]: ' >&2
+    read -r choice
+    case "$choice" in
+      1|cursor) printf '%s' cursor ;;
+      2|agents) printf '%s' agents ;;
+      3|both) printf '%s' both ;;
+      *) die "invalid choice" ;;
+    esac
+    return 0
+  fi
+
+  die "ambiguous --target auto; pass --target cursor, agents, or both"
+}
+
+install_one() {
+  dest=$1
+  parent=$(dirname -- "$dest")
+
+  if [ -e "$dest" ]; then
+    if [ -L "$dest" ]; then
+      :
+    elif [ "$REPLACE" -eq 0 ]; then
+      die "destination exists and is not a symlink: $dest (pass --replace to overwrite)"
+    else
+      rm -rf -- "$dest"
+    fi
+  fi
+
+  mkdir -p -- "$parent"
+
+  if [ "$MODE" = link ]; then
+    ln -sfn -- "$SOURCE" "$dest"
+    log "linked $dest -> $SOURCE"
+  else
+    rm -rf -- "$dest"
+    cp -R "$SOURCE" "$dest"
+    log "copied $SOURCE -> $dest"
+  fi
+}
+
+validate_source
+
+if [ "$TARGET" = auto ]; then
+  TARGET=$(resolve_auto_target)
+fi
+
+case "$TARGET" in
+  cursor)
+    install_one "$CURSOR_DEST"
+    ;;
+  agents)
+    install_one "$AGENTS_DEST"
+    ;;
+  both)
+    install_one "$CURSOR_DEST"
+    install_one "$AGENTS_DEST"
+    ;;
+esac
+
+log "install complete (target=$TARGET mode=$MODE)"
